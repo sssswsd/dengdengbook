@@ -1,0 +1,331 @@
+{
+  "chapter": {
+    "id": "ch10",
+    "title": "它能做完",
+    "subtitle": "等等，为什么？ · 第 12 章",
+    "topic": "division",
+    "order_no": 12
+  },
+  "summary": "老师让写一篇观察日记，写窗台上那盆花。阿芽让机器写，它一秒就写完了，写得比她好。她抄了一半停住，自己重新写了四行歪歪扭扭的话。第二天老师在她的本子上画了一个圈，说：你写的这四行，它写不出来——因为它不知道你在看它。",
+  "term": "分工",
+  "goals": {
+    "G1": "它能做完，而且做得比你好",
+    "G2": "有些事它做不了，因为它不在场",
+    "G3": "什么交给它，得你决定"
+  },
+  "misconceptions": {
+    "M1": "它做得好，就该让它做",
+    "M2": "它什么都能替我做"
+  },
+  "segments": [
+    {
+      "id": "seg10_p01",
+      "seq": 1,
+      "kind": "opening",
+      "is_hook": 0,
+      "title": "老师让写观察日记",
+      "body": {
+        "kicker": "第十二章",
+        "lines": [
+          "老师让写一篇观察日记。",
+          "写窗台上那盆花。"
+        ],
+        "note": "写你看见的。老师说。"
+      },
+      "image": "ch10_p1.png"
+    },
+    {
+      "id": "seg10_p02",
+      "seq": 2,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我让它写",
+      "body": {
+        "lines": [
+          "我把题目给它。",
+          "一秒，它写完了。"
+        ],
+        "note": "写得很好。"
+      }
+    },
+    {
+      "id": "seg10_p03",
+      "seq": 3,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "它写的",
+      "body": {
+        "lines": [
+          "叶子是绿的，边上有锯齿。",
+          "光从左边照进来，",
+          "叶子上有水珠。"
+        ],
+        "note": "每一句都对。\n一句废话也没有。"
+      },
+      "image": "ch10_p3.png"
+    },
+    {
+      "id": "seg10_p04",
+      "seq": 4,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我抄到一半",
+      "body": {
+        "lines": [
+          "我抄了一半，",
+          "笔停住了。"
+        ],
+        "note": "写得比我好。\n我抄得很快。"
+      }
+    },
+    {
+      "id": "seg10_p05",
+      "seq": 5,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G2",
+      "variant": "plain",
+      "title": "可这不像我写的",
+      "body": {
+        "kicker": "我停下来的地方",
+        "lines": [
+          "可这不像我写的。"
+        ],
+        "note": "它看见了那盆花。\n我也看见了。\n\n我们看见的，不是一个东西。",
+        "hold_ms": 2500
+      }
+    },
+    {
+      "id": "seg10_p06",
+      "seq": 6,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我自己写",
+      "body": {
+        "lines": [
+          "我把那张纸翻过去，",
+          "自己写。"
+        ],
+        "note": "写了四行。\n歪歪扭扭的。"
+      },
+      "image": "ch10_p6.png"
+    },
+    {
+      "id": "seg10_p07",
+      "seq": 7,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我写的四行",
+      "body": {
+        "lines": [
+          "它今天往窗户那边歪了一点。",
+          "我把它转回来了。"
+        ],
+        "note": "明天它还会歪过去。\n因为它喜欢光。"
+      }
+    },
+    {
+      "id": "seg10_p08",
+      "seq": 8,
+      "kind": "level",
+      "is_hook": 0,
+      "variant": "level",
+      "title": "你来分",
+      "body": {
+        "kicker": "轮到你了",
+        "note": "没有标准答案。",
+        "level": {
+          "kind": "sort",
+          "prompt": "这些事，你想交给它，还是自己做？",
+          "bins": [
+            {
+              "id": "its",
+              "label": "可以交给它",
+              "short": "交给它"
+            },
+            {
+              "id": "mine",
+              "label": "得我自己来",
+              "short": "我自己"
+            }
+          ],
+          "items": [
+            {
+              "id": "s1",
+              "label": "算一百道口算"
+            },
+            {
+              "id": "s2",
+              "label": "查一个字怎么写"
+            },
+            {
+              "id": "s3",
+              "label": "写今天的观察日记"
+            },
+            {
+              "id": "s4",
+              "label": "决定跟谁做朋友"
+            },
+            {
+              "id": "s5",
+              "label": "编一个睡前故事"
+            },
+            {
+              "id": "s6",
+              "label": "知道自己喜不喜欢"
+            },
+            {
+              "id": "s7",
+              "label": "把课文背下来"
+            },
+            {
+              "id": "s8",
+              "label": "想明白今天为什么难过"
+            },
+            {
+              "id": "s9",
+              "label": "整理做错的题"
+            },
+            {
+              "id": "s10",
+              "label": "决定明天要做什么"
+            }
+          ],
+          "done_prompt": "你是这么分的。",
+          "footnote": "没有对错。\n但你怎么分，说明你想让它做你的什么。"
+        }
+      }
+    },
+    {
+      "id": "seg10_p09",
+      "seq": 9,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "第二天",
+      "body": {
+        "lines": [
+          "本子发下来。",
+          "我的四行旁边，有一个圈。"
+        ],
+        "note": "老师什么都没改。\n就画了个圈。"
+      }
+    },
+    {
+      "id": "seg10_p10",
+      "seq": 10,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G3",
+      "title": "老师说",
+      "body": {
+        "lines": [
+          "老师说：你写的这四行，",
+          "它写不出来。"
+        ],
+        "note": "我问为什么。\n\n老师说：\n因为它不知道你在看它。\n\n它看不见你蹲在那儿，看了多久。\n它只知道「花」这个字。",
+        "bubbles": [
+          {
+            "q": "它写得那么好，为什么写不出这四行？",
+            "a": "因为这四行不在花上。\n在你和花之间。"
+          },
+          {
+            "q": "那它有什么用？",
+            "a": "它能做的很多。\n只是它不在场。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg10_p11",
+      "seq": 11,
+      "kind": "closing",
+      "is_hook": 0,
+      "title": "两张纸",
+      "body": {
+        "lines": [
+          "它那张纸，我收起来了。",
+          "工工整整的。"
+        ],
+        "note": "我的这张，歪歪扭扭。\n\n可上面有个圈。"
+      },
+      "image": "ch10_p11.png"
+    },
+    {
+      "id": "seg10_p12",
+      "seq": 12,
+      "kind": "glossary",
+      "is_hook": 0,
+      "variant": "naming",
+      "title": "它有个名字",
+      "body": {
+        "kicker": "它有个名字",
+        "lines": [
+          "什么交给它、",
+          "什么自己来，"
+        ],
+        "term": "分工",
+        "term_pinyin": "fēn gōng",
+        "definition": "它有能力做完很多事。\n可它不知道哪件值得做。\n\n大人管这个叫「分工」。",
+        "footnote": "它做得比你好，这不奇怪。\n\n奇怪的是有人以为，\n做得好就该全交给它。",
+        "takeaway": "它能做完，只有你知道值不值得。"
+      }
+    },
+    {
+      "id": "seg10_x_compare",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "换个说法",
+      "goal_tag": "G1",
+      "body": {
+        "kicker": "换个说法",
+        "lines": [
+          "计算器算得比你快一万倍。",
+          "可它不知道你要算什么。"
+        ],
+        "note": "你按哪个键，它算哪个。\n\n键是你按的。"
+      }
+    },
+    {
+      "id": "seg10_x_probe",
+      "seq": null,
+      "kind": "prompt",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "那还要我干什么",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "再想一下",
+        "lines": [
+          "它什么都能做完。",
+          "那还要我干什么？"
+        ],
+        "note": "它做得完，但它不知道为什么要做。\n\n「为什么」这一栏，\n一直空着。"
+      }
+    },
+    {
+      "id": "seg10_x_review",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "回头看这十二本",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "回头看这十二本",
+        "lines": [
+          "它学的是你给的例子。",
+          "它答的是你问的话。"
+        ],
+        "note": "它推的是你点过的，\n记得住事，记不住你。\n\n这十二本说的是同一件事：\n它一直在你画的那个圈里。"
+      }
+    }
+  ]
+}

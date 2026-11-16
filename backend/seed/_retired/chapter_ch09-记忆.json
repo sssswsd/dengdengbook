@@ -1,0 +1,302 @@
+{
+  "chapter": {
+    "id": "ch09",
+    "title": "它每次都重新认识我",
+    "subtitle": "等等，为什么？ · 第 9 章",
+    "topic": "memory",
+    "order_no": 9
+  },
+  "summary": "阿芽告诉机器她叫阿芽，养了一只橘色的胖猫叫豆豆。那天下午它一直叫她的名字。第二天她再来，它问「你是谁」。她说了三遍，每一遍它都很礼貌地问「你是谁」。她把昨天说过的话全说一遍，它又答得很好——它只在她说的时候知道，说完就忘了。",
+  "term": "记忆",
+  "goals": {
+    "G1": "它记不住昨天的事",
+    "G2": "它只在我说的时候知道，说完就忘",
+    "G3": "它记住的每一样，都得有人重新告诉它一次"
+  },
+  "misconceptions": {
+    "M1": "它认识我，我们是朋友",
+    "M2": "我记得它说过，它应该也记得"
+  },
+  "segments": [
+    {
+      "id": "seg9_p01",
+      "seq": 1,
+      "kind": "opening",
+      "is_hook": 0,
+      "title": "我跟它说了我的名字",
+      "body": {
+        "kicker": "第 9 章",
+        "lines": [
+          "我跟它说：我叫阿芽。",
+          "我养了一只猫，叫豆豆。"
+        ],
+        "note": "豆豆是橘色的，很胖。"
+      }
+    },
+    {
+      "id": "seg9_p02",
+      "seq": 2,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "它记住了",
+      "body": {
+        "lines": [
+          "它记住了。",
+          "那天下午，它一直叫我阿芽。"
+        ],
+        "note": "叫了好多次。\n我有点高兴。"
+      }
+    },
+    {
+      "id": "seg9_p03",
+      "seq": 3,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "第二天",
+      "body": {
+        "lines": [
+          "第二天我又去了。"
+        ],
+        "note": "它说：你是谁？"
+      }
+    },
+    {
+      "id": "seg9_p04",
+      "seq": 4,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我说了三遍",
+      "body": {
+        "lines": [
+          "我说：我是阿芽。",
+          "它说：你是谁？"
+        ],
+        "note": "我又说了一遍。\n它又问了一遍。\n\n每一次都很礼貌。"
+      }
+    },
+    {
+      "id": "seg9_p05",
+      "seq": 5,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G1",
+      "variant": "plain",
+      "title": "你是谁",
+      "body": {
+        "kicker": "它说的第一句话",
+        "lines": [
+          "你是谁？"
+        ],
+        "note": "昨天问过。今天又问。\n一个字都没变。",
+        "hold_ms": 2500
+      }
+    },
+    {
+      "id": "seg9_p06",
+      "seq": 6,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我全说了一遍",
+      "body": {
+        "lines": [
+          "我把昨天说过的，",
+          "全都说了一遍。"
+        ],
+        "note": "它又答得很好了。\n它又叫对了我的名字。",
+        "bubbles": [
+          {
+            "q": "它是不是想起来了？",
+            "a": "没有。\n是你刚说给它听的。"
+          },
+          {
+            "q": "那它昨天记住了吗？",
+            "a": "当时记住了。\n后来就没有了。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg9_p07",
+      "seq": 7,
+      "kind": "level",
+      "is_hook": 0,
+      "variant": "level",
+      "title": "你来放",
+      "body": {
+        "kicker": "轮到你了",
+        "note": "它只有六个格子。",
+        "level": {
+          "kind": "memory",
+          "prompt": "往里放放看。",
+          "slots": 6,
+          "facts": [
+            {
+              "id": "f1",
+              "text": "我叫阿芽"
+            },
+            {
+              "id": "f2",
+              "text": "我养了一只猫，叫豆豆"
+            },
+            {
+              "id": "f3",
+              "text": "豆豆是橘色的，很胖"
+            },
+            {
+              "id": "f4",
+              "text": "我最喜欢恐龙"
+            },
+            {
+              "id": "f5",
+              "text": "我坐在第三排"
+            },
+            {
+              "id": "f6",
+              "text": "我不吃香菜"
+            },
+            {
+              "id": "f7",
+              "text": "我妈妈是医生"
+            },
+            {
+              "id": "f8",
+              "text": "我昨天摔了一跤"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "seg9_p08",
+      "seq": 8,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G2",
+      "title": "它只在我说的时候知道",
+      "body": {
+        "kicker": "我明白了一件事",
+        "lines": [
+          "它只在我说的时候知道。",
+          "说完，就忘了。"
+        ],
+        "note": "不是忘了一天。\n是从来没存下来。\n\n所以它每次都从头认识我。",
+        "bubbles": [
+          {
+            "q": "那它昨天为什么叫我名字？",
+            "a": "因为你昨天说过。\n它当时记得。"
+          },
+          {
+            "q": "今天为什么忘了？",
+            "a": "因为中间隔了一个晚上。\n它没有「昨天」这个东西。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg9_p09",
+      "seq": 9,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我问它能不能记住我",
+      "body": {
+        "lines": [
+          "我问：你能记住我吗？",
+          "它说：我在记。"
+        ],
+        "note": "它说的时候，是真的在记。\n我看见它在听。"
+      }
+    },
+    {
+      "id": "seg9_p10",
+      "seq": 10,
+      "kind": "closing",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "可它每次都从头记",
+      "body": {
+        "lines": [
+          "可它每次都从头记。"
+        ],
+        "note": "我把这件事告诉老师。\n\n老师说：它记住的是话，\n不是说话的人。",
+        "persist_note": true
+      }
+    },
+    {
+      "id": "seg9_p11",
+      "seq": 11,
+      "kind": "glossary",
+      "is_hook": 0,
+      "variant": "naming",
+      "title": "它有个名字",
+      "body": {
+        "kicker": "它有个名字",
+        "lines": [
+          "它记得住、又留不住，",
+          "这件事有一个名字。"
+        ],
+        "term": "记忆",
+        "term_pinyin": "jì yì",
+        "definition": "它能记住刚才说的话。\n可一关掉，就没了。\n\n大人管这个叫「记忆」。",
+        "footnote": "它不是不想记住你。\n它是没有地方放。\n\n要它记住，得有人替它存着。",
+        "takeaway": "它记得住这件事，记不住你。"
+      }
+    },
+    {
+      "id": "seg9_x_compare",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "换个说法",
+      "goal_tag": "G2",
+      "body": {
+        "kicker": "换个说法",
+        "lines": [
+          "你在黑板上写字，",
+          "下课一擦就没了。"
+        ],
+        "note": "不是字写得不好。\n是黑板本来就会被擦。\n\n它那块黑板，每节课都擦。"
+      }
+    },
+    {
+      "id": "seg9_x_probe",
+      "seq": null,
+      "kind": "prompt",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "它算不算认识我",
+      "goal_tag": "G1",
+      "body": {
+        "kicker": "再想一下",
+        "lines": [
+          "它叫得出我的名字。",
+          "它算认识我吗？"
+        ],
+        "note": "认识一个人，\n得记得住上次。\n\n它没有上次。"
+      }
+    },
+    {
+      "id": "seg9_x_review",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "再看一眼",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "再看一眼",
+        "lines": [
+          "它记住的每一样东西，",
+          "都得有人再说一遍。"
+        ],
+        "note": "包括你的名字。\n包括它昨天说过的话。"
+      }
+    }
+  ]
+}

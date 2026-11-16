@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <defs>
+    <g id="dino" fill="#6b5847" stroke="#6b5847">
+      <ellipse cx="62" cy="64" rx="26" ry="15"/>
+      <path d="M46 56 q-14 -14 -20 -32" fill="none" stroke-width="12" stroke-linecap="round"/>
+      <ellipse cx="25" cy="21" rx="10" ry="6.5"/>
+      <path d="M15 21 l-8 2 l8 3 z"/>
+      <path d="M86 62 q10 6 12 16" fill="none" stroke-width="10" stroke-linecap="round"/>
+      <path d="M52 77 v15" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path d="M74 77 v15" fill="none" stroke-width="8" stroke-linecap="round"/>
+    </g>
+  </defs>
+
+  <rect width="1536" height="1024" fill="#fdf6e8"/>
+
+  <g stroke="#e2d3ba" stroke-width="2">
+    <rect x="53" y="80" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="405" y="80" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="757" y="80" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="1109" y="80" width="330" height="180" rx="10" fill="#fffaf0"/>
+
+    <rect x="53" y="282" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="405" y="282" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="757" y="282" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="1109" y="282" width="330" height="180" rx="10" fill="#fffaf0"/>
+
+    <rect x="53" y="484" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="405" y="484" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="757" y="484" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="1109" y="484" width="330" height="180" rx="10" fill="#fffaf0"/>
+
+    <rect x="53" y="686" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="405" y="686" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="757" y="686" width="330" height="180" rx="10" fill="#fffaf0"/>
+    <rect x="1109" y="686" width="330" height="180" rx="10" fill="#fffaf0"/>
+  </g>
+
+  <g opacity="0.9">
+    <use href="#dino" transform="translate(138,110) scale(1.5)"/>
+    <use href="#dino" transform="translate(490,110) scale(1.5)"/>
+    <use href="#dino" transform="translate(842,110) scale(1.5)"/>
+    <use href="#dino" transform="translate(1194,110) scale(1.5)"/>
+
+    <use href="#dino" transform="translate(138,312) scale(1.5)"/>
+    <use href="#dino" transform="translate(490,312) scale(1.5)"/>
+    <use href="#dino" transform="translate(842,312) scale(1.5)"/>
+    <use href="#dino" transform="translate(1194,312) scale(1.5)"/>
+
+    <use href="#dino" transform="translate(138,514) scale(1.5)"/>
+    <use href="#dino" transform="translate(490,514) scale(1.5)"/>
+    <use href="#dino" transform="translate(842,514) scale(1.5)"/>
+    <use href="#dino" transform="translate(1194,514) scale(1.5)"/>
+
+    <use href="#dino" transform="translate(138,716) scale(1.5)"/>
+    <use href="#dino" transform="translate(490,716) scale(1.5)"/>
+    <use href="#dino" transform="translate(842,716) scale(1.5)"/>
+    <use href="#dino" transform="translate(1194,716) scale(1.5)"/>
+  </g>
+</svg>

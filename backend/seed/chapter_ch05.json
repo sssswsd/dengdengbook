@@ -1,0 +1,279 @@
+{
+  "chapter": {
+    "id": "ch05",
+    "title": "它会被骗",
+    "subtitle": "等等，为什么？ · 第 5 章",
+    "topic": "adversarial",
+    "order_no": 5
+  },
+  "summary": "阿芽把一张猫的照片举给机器看，它说「猫」。她在照片上斜着贴纸条，一张、两张、三张——到第三张的时候，它说「斑马」。她把纸条揭下来，它又说「猫」。它说理由是「有条纹」，可那些条纹是她贴上去的。在它那里，猫就是没有条纹的，所以一有条纹，猫就不见了。",
+  "term": "对抗样本",
+  "goals": {
+    "G1": "往照片上加几道线，它就会改口",
+    "G2": "它改口的时候，一样确定",
+    "G3": "它看的是深浅和线条，不是「猫」这件事"
+  },
+  "misconceptions": {
+    "M1": "它看得很仔细，不会看错",
+    "M2": "它认错了，说明它笨"
+  },
+  "segments": [
+    {
+      "id": "seg5_p01",
+      "seq": 1,
+      "kind": "opening",
+      "is_hook": 0,
+      "title": "它一眼就看出来了",
+      "body": {
+        "kicker": "第五章",
+        "lines": [
+          "我把一张猫的照片",
+          "举到它前面。",
+          "它说：猫。"
+        ],
+        "note": "很快。它一眼就看出来了。"
+      },
+      "image": "ch05_p1.png"
+    },
+    {
+      "id": "seg5_p02",
+      "seq": 2,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我贴了一张纸条",
+      "body": {
+        "lines": [
+          "我在照片上，",
+          "斜着贴了一张纸条。"
+        ],
+        "note": "它还是说：猫。"
+      }
+    },
+    {
+      "id": "seg5_p03",
+      "seq": 3,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "三张",
+      "body": {
+        "lines": [
+          "两张。",
+          "三张。",
+          "它说：斑马。"
+        ],
+        "note": "贴到第三张的时候，它改口了。",
+        "hold_ms": 1200
+      }
+    },
+    {
+      "id": "seg5_p04",
+      "seq": 4,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G2",
+      "variant": "plain",
+      "title": "它说：有条纹",
+      "body": {
+        "kicker": "它的理由",
+        "lines": [
+          "它说：有条纹。"
+        ],
+        "note": "可那是我贴上去的纸条。\n不是长在猫身上的。",
+        "hold_ms": 2500
+      }
+    },
+    {
+      "id": "seg5_p05",
+      "seq": 5,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我一张张揭下来",
+      "body": {
+        "lines": [
+          "我把纸条一张张揭下来。",
+          "它说：猫。"
+        ],
+        "note": "又变回来了。\n快得像它从来没说过斑马。"
+      },
+      "image": "ch05_p5.png"
+    },
+    {
+      "id": "seg5_p06",
+      "seq": 6,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我说那是我贴的",
+      "body": {
+        "lines": [
+          "我说：那是我贴的纸条。",
+          "它说：可它有条纹。"
+        ],
+        "note": "我说：猫身上没有条纹啊。\n它说：现在有了。",
+        "bubbles": [
+          {
+            "q": "它不知道那是纸条吗？",
+            "a": "它只看见几道浅色的线。\n至于是谁弄上去的，\n它看不出来。"
+          },
+          {
+            "q": "那张照片还是猫吗？",
+            "a": "一直都是。\n变的只有它。"
+          }
+        ]
+      },
+      "image": "ch05_p6.png"
+    },
+    {
+      "id": "seg5_p07",
+      "seq": 7,
+      "kind": "level",
+      "is_hook": 0,
+      "variant": "level",
+      "title": "你来加",
+      "body": {
+        "kicker": "轮到你了",
+        "note": "看它在第几道改口。",
+        "level": {
+          "kind": "stripes",
+          "prompt": "给它加几道线，看看它什么时候改口。",
+          "shape": "cat",
+          "base": "猫",
+          "other": "斑马",
+          "flip_at": 3,
+          "max": 6
+        }
+      }
+    },
+    {
+      "id": "seg5_p08",
+      "seq": 8,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我又试了别的",
+      "body": {
+        "lines": [
+          "我又试了别的。",
+          "把照片倒过来给它看。"
+        ],
+        "note": "它还是说：猫。\n倒过来它不怕，画几道线它就怕了。"
+      }
+    },
+    {
+      "id": "seg5_p09",
+      "seq": 9,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "涂满",
+      "body": {
+        "lines": [
+          "我把整张照片，",
+          "都贴满了纸条。"
+        ],
+        "note": "它说：斑马。"
+      }
+    },
+    {
+      "id": "seg5_p10",
+      "seq": 10,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G3",
+      "title": "那猫呢",
+      "body": {
+        "lines": [
+          "我说：那猫呢？",
+          "它说：这里没有猫。"
+        ],
+        "note": "在它那里，猫就是没有条纹的。\n所以一有条纹，猫就不见了。\n\n它一次只放得下一个答案。",
+        "bubbles": [
+          {
+            "q": "它为什么看不见猫了？",
+            "a": "它不是没看见。\n是它认猫的办法，\n就是「没有条纹」。"
+          },
+          {
+            "q": "换个角度看呢？",
+            "a": "它不会换角度。\n它只有一个角度。"
+          }
+        ]
+      },
+      "image": "ch05_p10.png"
+    },
+    {
+      "id": "seg5_p11",
+      "seq": 11,
+      "kind": "glossary",
+      "is_hook": 0,
+      "variant": "naming",
+      "title": "它有个名字",
+      "body": {
+        "kicker": "它有个名字",
+        "lines": [
+          "它被几道线骗过去，",
+          "这件事有一个名字。"
+        ],
+        "term": "对抗样本",
+        "term_pinyin": "duì kàng yàng běn",
+        "definition": "在照片上添几道线，\n它就认成了别的。\n\n这种动过手脚的图，\n叫「对抗样本」。",
+        "footnote": "它看见的线是真的。\n线是你加的，它不知道。\n\n说它「看走眼」，也行。",
+        "takeaway": "它看的，和你看到的不是同一件事。"
+      }
+    },
+    {
+      "id": "seg5_x_compare",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "换个说法",
+      "goal_tag": "G1",
+      "body": {
+        "kicker": "换个说法",
+        "lines": [
+          "雾天，你看不清一个人的脸，",
+          "只看清一件红衣服。"
+        ],
+        "note": "你会说：那是穿红衣服的人。\n它也会这么说。\n\n你们都认得很准，也都不太牢。"
+      }
+    },
+    {
+      "id": "seg5_x_probe",
+      "seq": null,
+      "kind": "prompt",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "它有没有犹豫",
+      "goal_tag": "G2",
+      "body": {
+        "kicker": "再想一下",
+        "lines": [
+          "它改口的时候，",
+          "有没有犹豫一下？"
+        ],
+        "note": "没有。\n它说「斑马」和说「猫」，\n一样快。"
+      }
+    },
+    {
+      "id": "seg5_x_review",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "再看一眼",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "再看一眼",
+        "lines": [
+          "纸条揭掉，它又说是猫。",
+          "它认的不是这只猫。",
+          "是「有没有条纹」。"
+        ],
+        "note": "照片一直没变。\n变的只有它。"
+      }
+    }
+  ]
+}

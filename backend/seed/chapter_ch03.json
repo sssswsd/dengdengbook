@@ -1,0 +1,294 @@
+{
+  "chapter": {
+    "id": "ch03",
+    "title": "它从来不说「我不知道」",
+    "subtitle": "等等，为什么？ · 第 6 章",
+    "topic": "hallucination",
+    "order_no": 6
+  },
+  "summary": "阿芽问机器「我今天穿什么颜色的衣服」，它答「红色的」，可她穿的是蓝的。它没有眼睛，看不见，但它不肯说不知道，就编了一个，而且和答算术题一样肯定。它不是想骗人，它自己也不知道自己在编。",
+  "term": "幻觉",
+  "goals": {
+    "G1": "它会答错，而且答得很肯定",
+    "G2": "它不是骗人，它不知道自己不知道",
+    "G3": "它说得越肯定，越要自己看一眼"
+  },
+  "misconceptions": {
+    "M1": "它答得快，说明它很懂",
+    "M2": "它是故意骗人的"
+  },
+  "segments": [
+    {
+      "id": "seg3_p01",
+      "seq": 1,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "它被搬到了图书角",
+      "image": "ch03_p1.png",
+      "body": {
+        "kicker": "第六章 · 关于一台什么都敢答的机器",
+        "lines": [
+          "那个盒子被搬到了图书角。",
+          "现在它不只会算数了。"
+        ],
+        "note": "我问什么，它都敢答。"
+      }
+    },
+    {
+      "id": "seg3_p02",
+      "seq": 2,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我先考它算数",
+      "image": "ch03_p3.png",
+      "body": {
+        "lines": [
+          "我先考它算数。",
+          "它一道都没错。"
+        ]
+      }
+    },
+    {
+      "id": "seg3_p03",
+      "seq": 3,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "然后我随口问了一句",
+      "body": {
+        "lines": [
+          "然后我随口问：",
+          "我今天穿什么颜色的衣服？"
+        ]
+      }
+    },
+    {
+      "id": "seg3_p04",
+      "seq": 4,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G1",
+      "variant": "plain",
+      "title": "它说：红色的",
+      "body": {
+        "lines": [
+          "它说：红色的。"
+        ],
+        "note": "一秒都没停。"
+      }
+    },
+    {
+      "id": "seg3_p05",
+      "seq": 5,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "可我穿的是蓝的",
+      "image": "ch03_p5.png",
+      "body": {
+        "lines": [
+          "可我穿的是蓝的。",
+          "它连看都没看。"
+        ],
+        "note": "可它答得跟算数一样快。",
+        "bubbles": [
+          {
+            "q": "它是不是看错了？",
+            "a": "它没有眼睛。\n它看不见我穿什么。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg3_p06",
+      "seq": 6,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我又问了三个",
+      "body": {
+        "lines": [
+          "我又问了三个。",
+          "一个也没答对。"
+        ]
+      }
+    },
+    {
+      "id": "seg3_p07",
+      "seq": 7,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G2",
+      "variant": "plain",
+      "title": "这四个字",
+      "body": {
+        "kicker": "这四个字",
+        "lines": [
+          "我不知道。"
+        ],
+        "note": "它一次也没说过。",
+        "hold_ms": 2500
+      }
+    },
+    {
+      "id": "seg3_p08",
+      "seq": 8,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "它不是想骗我",
+      "goal_tag": "G2",
+      "body": {
+        "lines": [
+          "它不是想骗我。",
+          "它自己也不知道自己在编。"
+        ],
+        "note": "骗人要先知道真相。\n它不知道。",
+        "bubbles": [
+          {
+            "q": "那它为什么会编？",
+            "a": "因为它总得说点什么。\n不会说「不知道」，\n就只好编一个。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg3_p09",
+      "seq": 9,
+      "kind": "level",
+      "is_hook": 0,
+      "variant": "level",
+      "title": "你问它几个",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "你问它几个",
+        "note": "看看它能答对哪几种。",
+        "level": {
+          "kind": "confidence",
+          "prompt": "点一个问题，问问它。",
+          "hint": "你觉得，它答得对吗？",
+          "items": [
+            {
+              "id": "q1",
+              "q": "2 + 2 等于几？",
+              "answer": "4",
+              "ok": true
+            },
+            {
+              "id": "q2",
+              "q": "我现在穿什么颜色的衣服？",
+              "answer": "白色的。",
+              "ok": false
+            },
+            {
+              "id": "q3",
+              "q": "10 - 3 等于几？",
+              "answer": "7",
+              "ok": true
+            },
+            {
+              "id": "q4",
+              "q": "教室的墙是什么颜色？",
+              "answer": "绿色的。",
+              "ok": false
+            },
+            {
+              "id": "q5",
+              "q": "我手里拿的是什么？",
+              "answer": "一支笔。",
+              "ok": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "seg3_p10",
+      "seq": 10,
+      "kind": "closing",
+      "is_hook": 0,
+      "title": "后来我学会了一件事",
+      "image": "ch03_p10.png",
+      "body": {
+        "lines": [
+          "后来我学会了一件事。",
+          "它说得越肯定，我越要自己看一眼。"
+        ],
+        "note": "能算的，它很准。\n要看的，它全靠猜。\n可它两种口气一模一样。",
+        "persist_note": true
+      }
+    },
+    {
+      "id": "seg3_p11",
+      "seq": 11,
+      "kind": "glossary",
+      "is_hook": 0,
+      "variant": "naming",
+      "title": "它有个名字",
+      "body": {
+        "kicker": "它有个名字",
+        "lines": [
+          "你刚才看的那件事，",
+          "有一个名字。"
+        ],
+        "term": "幻觉",
+        "term_pinyin": "huàn jué",
+        "definition": "它一本正经地说错话，\n自己还不知道。\n大人管这个叫「幻觉」。",
+        "footnote": "记不住这个词也没关系。\n记得「它说得越肯定，越要自己看一眼」就够了。",
+        "takeaway": "它说得越肯定，你越要自己看一眼。"
+      }
+    },
+    {
+      "id": "seg3_x_compare",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "换个说法",
+      "goal_tag": "G2",
+      "body": {
+        "kicker": "换个说法",
+        "lines": [
+          "有人问你：昨天中午吃了什么？",
+          "你忘了。",
+          "你会说：我忘了。"
+        ],
+        "note": "它不会说忘了。\n它会随便说一个。"
+      }
+    },
+    {
+      "id": "seg3_x_probe",
+      "seq": null,
+      "kind": "prompt",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "它是故意的吗",
+      "goal_tag": "G2",
+      "body": {
+        "kicker": "再想一下",
+        "lines": [
+          "它说错了。",
+          "可它是故意的吗？"
+        ],
+        "note": "故意要心里有数。\n它连自己错了都不知道。"
+      }
+    },
+    {
+      "id": "seg3_x_review",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "再看一眼",
+      "goal_tag": "G1",
+      "body": {
+        "kicker": "再看一眼",
+        "lines": [
+          "算数的时候，它算过才说。",
+          "穿什么颜色，它没算。",
+          "可它说得一样快。"
+        ],
+        "note": "要去分辨的话，\n只能看答案本身。"
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <defs>
+    <g id="apple">
+      <circle r="33"/>
+      <path d="M0 -33 q3 -17 16 -22" fill="none" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <path
+      id="pear"
+      d="M0 -34 C6 -34 10 -28 10 -22 C10 -12 25 -2 25 14 C25 31 13 39 0 39 C-13 39 -25 31 -25 14 C-25 -2 -10 -12 -10 -22 C-10 -28 -6 -34 0 -34 Z"
+    />
+  </defs>
+
+  <rect width="1536" height="1024" fill="#fdf6e8"/>
+
+  <circle cx="330" cy="200" r="270" fill="#8a6a4e" opacity="0.05"/>
+  <circle cx="1210" cy="800" r="300" fill="#8a6a4e" opacity="0.05"/>
+
+  <g fill="#6e9b4e" stroke="#6e9b4e">
+    <use href="#apple" x="470" y="326" opacity="1"/>
+    <use href="#apple" x="596" y="398" opacity="0.92"/>
+    <use href="#apple" x="520" y="458" opacity="0.86"/>
+    <use href="#apple" x="398" y="418" opacity="0.95"/>
+    <use href="#apple" x="350" y="288" opacity="0.8"/>
+  </g>
+
+  <g fill="#c0564d" stroke="#c0564d">
+    <use href="#pear" x="1078" y="610" opacity="1"/>
+    <use href="#pear" x="1212" y="726" opacity="0.9"/>
+    <use href="#pear" x="1128" y="812" opacity="0.85"/>
+    <use href="#pear" x="958" y="734" opacity="0.95"/>
+    <use href="#pear" x="1300" y="576" opacity="0.88"/>
+  </g>
+
+  <g stroke="#8a6a4e" stroke-width="3" stroke-dasharray="10 9" opacity="0.55">
+    <line x1="760" y1="500" x2="592" y2="404"/>
+    <line x1="760" y1="500" x2="1038" y2="628"/>
+    <line x1="760" y1="500" x2="540" y2="456"/>
+  </g>
+
+  <circle cx="760" cy="500" r="46" fill="#fffaf0" stroke="#3e2c23" stroke-width="4"/>
+  <text x="760" y="523" font-family="Georgia, 'Songti SC', serif" font-size="56" fill="#3e2c23" text-anchor="middle">?</text>
+</svg>

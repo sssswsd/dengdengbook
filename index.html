@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>等等，为什么？</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper: #FFF8EC;
+    --ink: #3E2C23;
+    --ink2: #8A7A6A;
+    --note: #8A6A4E;
+    --green: #6E9B4E;
+    --red: #C0564D;
+    --mustard: #E8B94A;
+    --edge: #D8C8B2;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #241F1B;
+    font-family: "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  body { display: grid; place-items: center; -webkit-tap-highlight-color: transparent; }
+
+  #book {
+    position: relative;
+    width: min(95vw, calc(90vh * 1.5), 1240px);
+    aspect-ratio: 3 / 2;
+    background: var(--paper);
+    overflow: hidden;
+    box-shadow: 0 34px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(0,0,0,.35);
+    font-size: clamp(13px, 1.36vw, 18px);
+    isolation: isolate;
+  }
+
+  /* 书页边缘与中缝 */
+  #book::before {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 45;
+    box-shadow: inset 0 0 90px rgba(120,95,60,.16);
+    background: linear-gradient(90deg, rgba(140,110,70,.10) 0%, rgba(0,0,0,0) 5%);
+  }
+  /* 纸纹 */
+  #book::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 44;
+    opacity: .5;
+    background:
+      radial-gradient(130% 100% at 50% 0%, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 60%),
+      radial-gradient(90% 80% at 88% 92%, rgba(190,160,110,.12) 0%, rgba(0,0,0,0) 60%);
+    mix-blend-mode: multiply;
+  }
+
+  .pg {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .74s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .pg.cur { transform: translateX(0); z-index: 3; }
+  .pg.past { transform: translateX(-100%); }
+
+  @keyframes slideFromLeft {
+    from { transform: translateX(-30%); opacity: .25; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+  .pg.backIn { animation: slideFromLeft .64s cubic-bezier(.4,0,.2,1); }
+
+  /* ---------- 满版图页 ---------- */
+  .bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .bg.zoom { transform: scale(1.55); transform-origin: 60% 52%; }
+  .bg.ghost { filter: blur(7px) saturate(.55); opacity: .26; transform: scale(1.12); }
+  .ghost-veil {
+    position: absolute; inset: 0; z-index: 2;
+    background: rgba(251,243,228,.5);
+  }
+
+  .caption {
+    position: absolute;
+    left: 7.5%; right: 7.5%;
+    bottom: 7.5%;
+    z-index: 6;
+  }
+  .caption .line {
+    font-size: 1.42em;
+    color: var(--ink);
+    line-height: 1.95;
+    letter-spacing: .07em;
+    min-height: 1em;
+    text-shadow: 0 1px 0 rgba(255,248,236,.55);
+  }
+  .caption .line + .line { margin-top: .15em; }
+
+  /* 深色画面上用浅字 */
+  .dark .caption .line {
+    color: #FBF3E6;
+    text-shadow: 0 2px 12px rgba(40,28,18,.55);
+  }
+  .dark::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(40,30,20,0) 48%, rgba(40,30,20,.42) 100%);
+  }
+
+  /* ---------- 文字页 ---------- */
+  .text-page {
+    justify-content: center;
+    padding: 9% 12%;
+  }
+  .text-page .line {
+    font-size: 1.55em;
+    color: var(--ink);
+    line-height: 2.1;
+    letter-spacing: .08em;
+    min-height: 1em;
+  }
+  .text-page .line + .line { margin-top: .25em; }
+
+  .kicker {
+    position: absolute;
+    left: 7.5%; top: 7%;
+    font-size: .78em;
+    color: var(--ink2);
+    letter-spacing: .26em;
+    z-index: 6;
+  }
+
+  /* ---------- 批注 ---------- */
+  .note {
+    position: absolute;
+    right: 7.5%;
+    bottom: 7.5%;
+    max-width: 36%;
+    font-family: KaiTi, STKaiti, "Kaiti SC", serif;
+    font-size: 1em;
+    color: var(--note);
+    line-height: 2.05;
+    white-space: pre-wrap;
+    opacity: 0;
+    z-index: 7;
+  }
+  .note::before {
+    content: "";
+    display: block;
+    width: 22px; height: 1px;
+    background: rgba(138,106,78,.4);
+    margin-bottom: .85em;
+  }
+  .note span { opacity: 0; transition: opacity .3s ease; }
+  .on-dark .note { color: #F0DEC2; }
+  .on-dark .note::before { background: rgba(240,222,194,.5); }
+
+  /* ---------- 气泡 ---------- */
+  .bubbles {
+    position: absolute;
+    left: 7.5%; bottom: 7.5%;
+    display: flex; gap: .6em; flex-wrap: wrap;
+    max-width: 44%;
+    z-index: 8;
+  }
+  .bubble {
+    border: 1px solid rgba(138,106,78,.34);
+    background: rgba(255,250,240,.94);
+    color: var(--ink);
+    border-radius: 2em;
+    padding: .64em 1.2em;
+    font-size: .9em;
+    letter-spacing: .05em;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .45s ease, transform .45s ease, border-color .2s ease;
+  }
+  .bubble.on { opacity: 1; transform: none; }
+  .bubble:hover { border-color: #B49A78; }
+
+  .answer {
+    position: absolute;
+    left: 7.5%; bottom: 7.5%;
+    max-width: 60%;
+    font-size: 1.05em;
+    color: var(--ink);
+    line-height: 2;
+    letter-spacing: .05em;
+    white-space: pre-wrap;
+    z-index: 8;
+    opacity: 0;
+    transition: opacity .6s ease;
+    background: rgba(255,250,240,.9);
+    padding: .5em .8em;
+    border-radius: .4em;
+  }
+
+  /* ---------- 练习册 ---------- */
+  .sheet {
+    background: #FFFCF5;
+    border: 1px solid var(--edge);
+    border-radius: 2px;
+    padding: 4% 5%;
+    box-shadow: 0 10px 30px rgba(120,95,60,.14);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 18% 0;
+  }
+  .check { position: relative; height: 1.4em; opacity: 0; transition: opacity .35s ease; }
+  .check.on { opacity: 1; }
+  .check::after {
+    content: "";
+    position: absolute; left: 26%; top: 4%;
+    width: .5em; height: .9em;
+    border-right: 2.6px solid var(--red);
+    border-bottom: 2.6px solid var(--red);
+    transform: rotate(40deg);
+    border-radius: 1px;
+  }
+
+  .ledger {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12% 8%;
+    font-size: 1.15em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .05em;
+  }
+  .ledger span { opacity: 0; transition: opacity .45s ease; }
+  .ledger span.on { opacity: 1; }
+
+  /* ---------- 关卡 ---------- */
+  .stage { justify-content: center; padding: 8% 11%; }
+  .machine {
+    width: 100%;
+    height: 4.6em;
+    background: #3A322C;
+    border-radius: .5em;
+    display: grid; place-items: center;
+    color: var(--mustard);
+    font-size: 1.6em;
+    letter-spacing: .14em;
+    font-variant-numeric: tabular-nums;
+    transition: box-shadow .4s ease, color .4s ease;
+  }
+  .machine.wrong { color: #E8988F; box-shadow: inset 0 0 0 2px var(--red); }
+  .cards { display: flex; gap: .7em; flex-wrap: wrap; margin-top: 7%; justify-content: center; }
+  .card {
+    padding: .75em 1.35em;
+    border: 1px solid var(--edge);
+    border-radius: .45em;
+    background: #FFFDF8;
+    color: var(--ink);
+    font-size: 1.12em;
+    letter-spacing: .06em;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: transform .18s ease, border-color .18s ease, opacity .35s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: #B49A78; }
+  .card.done { opacity: .28; pointer-events: none; }
+
+  .formula {
+    position: absolute;
+    left: 50%; bottom: 7%;
+    transform: translateX(-50%);
+    font-size: .8em;
+    color: var(--ink2);
+    letter-spacing: .08em;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .formula code {
+    display: none;
+    font-family: ui-monospace, Consolas, monospace;
+    color: #8A5A3E;
+    letter-spacing: .04em;
+  }
+  .formula.open code { display: inline; }
+
+  /* ---------- 封面 ---------- */
+  .cover { justify-content: center; padding: 8% 12%; }
+  .cover-veil {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(102deg, rgba(255,248,236,.95) 0%, rgba(255,248,236,.86) 34%, rgba(255,248,236,.35) 58%, rgba(255,248,236,0) 76%);
+  }
+  .cover-inner { position: relative; z-index: 6; }
+  .cover h1 {
+    font-family: "Songti SC", "SimSun", Georgia, serif;
+    font-size: 3em;
+    color: var(--ink);
+    letter-spacing: .1em;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .cover .sub {
+    margin-top: 1.8em;
+    font-size: 1em;
+    color: var(--ink2);
+    letter-spacing: .16em;
+    line-height: 2.2;
+  }
+  .cover .mark {
+    position: absolute;
+    right: 10%; bottom: 10%;
+    width: 3.4em; height: 3.4em;
+    border: 1px solid rgba(138,106,78,.35);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: KaiTi, STKaiti, serif;
+    font-size: 1em;
+    color: var(--note);
+    letter-spacing: .1em;
+  }
+  .resume {
+    margin-top: 2.4em;
+    font-size: .86em;
+    color: var(--note);
+    letter-spacing: .1em;
+    cursor: pointer;
+    border-bottom: 1px dashed var(--edge);
+    padding-bottom: .25em;
+    display: inline-block;
+  }
+
+  /* ---------- 控件 ---------- */
+  .edge-btn {
+    position: absolute; top: 0; bottom: 0;
+    width: 10%;
+    border: none; background: transparent;
+    z-index: 30; cursor: pointer;
+    display: grid; place-items: center;
+    color: rgba(62,44,35,.55);
+    font-size: 1.05em;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .edge-btn.left { left: 0; }
+  .edge-btn.right { right: 0; }
+  #book:hover .edge-btn { opacity: .5; }
+
+  .foot {
+    position: absolute; left: 50%; bottom: 2.6%;
+    transform: translateX(-50%);
+    display: flex; gap: .42em; z-index: 32;
+  }
+  .foot i {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(138,106,78,.3);
+    display: block;
+    transition: background .3s ease;
+  }
+  .foot i.on { background: rgba(62,44,35,.6); }
+
+  #agent {
+    position: absolute; left: 2.6%; top: 2.6%;
+    z-index: 50;
+    width: 15.5em;
+    padding: .8em .95em;
+    background: rgba(38,30,24,.9);
+    color: #EADCC4;
+    font-family: ui-monospace, Consolas, "Courier New", monospace;
+    font-size: .68em;
+    line-height: 1.85;
+    border-radius: 6px;
+    letter-spacing: .02em;
+    display: none;
+    backdrop-filter: blur(2px);
+  }
+  #agent.on { display: block; }
+  #agent .hd { color: var(--mustard); letter-spacing: .12em; }
+  #agent .k { color: #9C8F7C; }
+  #agent .v { color: #EADCC4; }
+  #agent .dec { color: #9BD08A; }
+
+  #voice {
+    position: absolute; right: 3%; top: 3%;
+    z-index: 33;
+    width: 2.2em; height: 2.2em;
+    border: 1px solid rgba(138,106,78,.32);
+    border-radius: 50%;
+    background: rgba(255,250,240,.82);
+    color: var(--ink2);
+    cursor: pointer;
+    display: grid; place-items: center;
+    font-size: .82em;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  #voice.on { color: var(--green); border-color: var(--green); }
+
+  #agentBtn {
+    position: absolute; right: 3%; top: 8.6%;
+    z-index: 33;
+    width: 2.2em; height: 2.2em;
+    border: 1px solid rgba(138,106,78,.32);
+    border-radius: 50%;
+    background: rgba(255,250,240,.82);
+    color: var(--ink2);
+    cursor: pointer;
+    display: grid; place-items: center;
+    font-size: .82em;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  #agentBtn.on { color: #B4762A; border-color: #B4762A; }
+
+  /* 遮 AI 水印 */
+  .wm {
+    position: absolute; right: 0; bottom: 0;
+    width: 20%; height: 13%;
+    z-index: 4; pointer-events: none;
+    background: radial-gradient(circle at 100% 100%, rgba(255,248,236,1) 0%, rgba(255,248,236,.85) 28%, rgba(255,248,236,0) 68%);
+  }
+</style>
+</head>
+<body>
+
+<div id="book">
+
+  <!-- 封面 -->
+  <section class="pg cover">
+    <img class="bg" src="art/p1.png" alt="教室">
+    <div class="cover-veil"></div>
+    <div class="cover-inner">
+      <h1>等等，<br>为什么？</h1>
+      <p class="sub">一本会等的书<br>第 2 章 · 它背下了整本练习册</p>
+      <span class="resume" id="resume" hidden>上次读到一半，接着看 →</span>
+    </div>
+    <span class="mark">绘</span>
+  </section>
+
+  <!-- p1 教室 -->
+  <section class="pg">
+    <img class="bg" src="art/p1.png" alt="教室后面，地上放着一个盒子，三个孩子站在一旁">
+    <div class="caption">
+      <p class="line" data-t="那天，教室后面多了一个盒子。"></p>
+      <p class="line" data-t="老师说，它什么题都会做。"></p>
+    </div>
+    <p class="note" data-t="你信吗？"></p>
+  </section>
+
+  <!-- p2 推过去 -->
+  <section class="pg">
+    <img class="bg" src="art/p2.png" alt="地板上摊开的练习册，盒子在它后面">
+    <div class="caption">
+      <p class="line" data-t="我把练习册推过去。"></p>
+      <p class="line" data-t="它一道一道，全做完了。"></p>
+    </div>
+    <p class="note" data-t="它做得很快。快得有点吓人。"></p>
+  </section>
+
+  <!-- p3 练习册 -->
+  <section class="pg dark">
+    <img class="bg" src="art/p3.png" alt="桌上摊开的练习册">
+    <div class="caption">
+      <p class="line" data-t="一百道。"></p>
+      <p class="line" data-t="一道都没错。"></p>
+    </div>
+    <p class="note on-dark" data-t="到这儿，所有人都觉得它厉害。&#10;包括我。"></p>
+    <div class="bubbles" data-bubbles='[["它怎么做到的？","它把每一道都看过了。\n每一道。"]]'></div>
+  </section>
+
+  <!-- p4 新卷子 -->
+  <section class="pg">
+    <img class="bg" src="art/p4.png" alt="老师的手拿着一张空白卷子">
+    <div class="caption">
+      <p class="line" data-t="老师拿出一张新卷子。"></p>
+      <p class="line" data-t="是今年的。"></p>
+    </div>
+    <p class="note" data-t="我看见它的屏幕亮了一下。"></p>
+  </section>
+
+  <!-- p5 屏幕 -->
+  <section class="pg">
+    <img class="bg" src="art/p5.png" alt="暗处亮着的屏幕">
+    <div class="caption">
+      <p class="line" data-t="第一道，它写错了。"></p>
+    </div>
+    <p class="note" data-t="教室里一下很安静。"></p>
+  </section>
+
+  <!-- p6 静默 -->
+  <section class="pg text-page" style="background:#FDF6E9;">
+    <div style="text-align:center;">
+      <p class="line" data-t="3 + 5 = 6" style="font-size:3.6em;letter-spacing:.18em;font-variant-numeric:tabular-nums;"></p>
+    </div>
+    <p class="note" data-t="你知道它怎么想的吗？"></p>
+  </section>
+
+  <!-- p7 翻回练习册 -->
+  <section class="pg text-page" style="background:#FBF3E4;">
+    <img class="bg ghost" src="art/p3.png" alt="">
+    <div class="ghost-veil"></div>
+    <p class="kicker">我翻回了练习册</p>
+    <div class="sheet" style="width:80%;margin:0 auto;position:relative;z-index:6;">
+      <div class="ledger" id="ledger"></div>
+    </div>
+    <p class="line" data-t="我把这些题看了一遍。" style="margin-top:6%;text-align:center;position:relative;z-index:6;"></p>
+    <p class="note" data-t="你看这些题，&#10;有没有发现什么？"></p>
+    <div class="bubbles" data-bubbles='[["它们都一样？","对。每个加号前后，\n是同一个数。"],["所以它以为所有题都这样？","你比我快。\n我看了很久才明白。"]]'></div>
+  </section>
+
+  <!-- p8 -->
+  <section class="pg text-page">
+    <div>
+      <p class="line" data-t="它学的不是加法。"></p>
+      <p class="line" data-t="它学的是——"></p>
+      <p class="line" data-t="第一个数，加它自己。" style="font-size:1.9em;letter-spacing:.12em;margin-top:.45em;color:#5A4230;"></p>
+    </div>
+    <p class="note" data-t="这个办法，在练习册上一百道全对。&#10;因为没有一道，长得不一样。"></p>
+    <div class="bubbles" data-bubbles='[["那它错了吗？","在练习册上，它一点都没错。"]]'></div>
+  </section>
+
+  <!-- p9 关卡 -->
+  <section class="pg stage">
+    <p class="kicker">你出一道，它答一道</p>
+    <div class="machine" id="screen">—</div>
+    <div class="cards" id="cards"></div>
+    <p class="formula" id="formula">看它的全部办法 <code>它的全部办法 = a + a</code></p>
+    <p class="note" data-t="试到你觉得，&#10;你已经知道它了。"></p>
+  </section>
+
+  <!-- p10 空教室 -->
+  <section class="pg">
+    <img class="bg" src="art/p10.png" alt="教室空了，椅子推在墙边">
+    <div class="caption">
+      <p class="line" data-t="后来老师把它搬走了。"></p>
+      <p class="line" data-t="没有人说它笨。"></p>
+    </div>
+    <p class="note" data-t="它不是不会。&#10;它只是没见过的题，一道也没有。&#10;&#10;下次你想知道一个人会不会，&#10;别用他做过的题考他。"></p>
+    <div class="wm"></div>
+  </section>
+
+  <button class="edge-btn left" id="prev" aria-label="上一页">←</button>
+  <button class="edge-btn right" id="next" aria-label="下一页">→</button>
+  <div class="foot" id="dots"></div>
+  <button id="voice" aria-label="朗读开关">静</button>
+  <button id="agentBtn" aria-label="看它在判断什么">意</button>
+  <div id="agent"></div>
+</div>
+
+<!-- agent 可以随时调用的片段：默认不在书里，由它决定要不要插进来 -->
+<template id="tpl-extra">
+  <section class="pg text-page" data-beat="extra" style="background:#FBF3E4;">
+    <p class="kicker">换一个说法</p>
+    <div>
+      <p class="line" data-t="你只见过红苹果。"></p>
+      <p class="line" data-t="后来有人递给你一个青的。"></p>
+      <p class="line" data-t="你会不会说：这不是苹果？"></p>
+    </div>
+    <p class="note" data-t="它不是笨。&#10;它见过的，只有一种。"></p>
+  </section>
+</template>
+
+<script>
+(function () {
+  var book = document.getElementById('book');
+  var pages = Array.prototype.slice.call(book.querySelectorAll('.pg'));
+  var dotsBox = document.getElementById('dots');
+  var voiceBtn = document.getElementById('voice');
+  var cur = -1;
+  var timers = [];
+  var voiceOn = false;
+  var pageEnterAt = Date.now();
+  var AG = { on: false, log: [], inserted: false };
+  var KEY = 'dengdeng.book.ch02';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function saveState(patch) {
+    var s = loadState();
+    for (var k in patch) s[k] = patch[k];
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  }
+
+  function T(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function speak(text) {
+    if (!voiceOn || !window.speechSynthesis || !text) return;
+    try {
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN'; u.rate = 0.92; u.pitch = 1.02;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function reveal(el, startDelay, each) {
+    if (!el) return 0;
+    var txt = el.getAttribute('data-t') || '';
+    el.textContent = '';
+    Array.prototype.forEach.call(txt, function (ch, i) {
+      var s = document.createElement('span');
+      s.textContent = ch;
+      s.style.opacity = 0;
+      el.appendChild(s);
+      T(startDelay + i * each, function () { s.style.opacity = 1; });
+    });
+    return startDelay + txt.length * each;
+  }
+
+  function typeBlock(page, delay, each) {
+    var lines = page.querySelectorAll('.line');
+    var t = delay, spoken = [];
+    lines.forEach(function (p) {
+      var txt = p.getAttribute('data-t') || '';
+      reveal(p, t, each);
+      if (txt) spoken.push(txt);
+      t += txt.length * each + 280;
+    });
+    if (spoken.length) T(delay, function () { speak(spoken.join('。')); });
+    return t;
+  }
+
+  var LEDGER = [];
+  for (var n = 1; n <= 12; n++) LEDGER.push(n + ' + ' + n + ' = ' + (n * 2));
+
+  function buildLedger(page) {
+    var box = page.querySelector('#ledger');
+    if (!box || box.dataset.built) return;
+    LEDGER.forEach(function (t) {
+      var s = document.createElement('span');
+      s.textContent = t;
+      box.appendChild(s);
+    });
+    box.dataset.built = '1';
+  }
+
+  var TASKS = [[1, 1], [2, 2], [3, 5], [7, 2], [9, 9]];
+
+  function buildCards(page) {
+    var box = page.querySelector('#cards');
+    if (!box || box.dataset.built) return;
+    TASKS.forEach(function (pair) {
+      var a = pair[0], b = pair[1];
+      var k = document.createElement('div');
+      k.className = 'card';
+      k.textContent = a + ' + ' + b;
+      k.addEventListener('click', function () {
+        if (k.classList.contains('done')) return;
+        k.classList.add('done');
+        ask(page, a, b);
+      });
+      box.appendChild(k);
+    });
+    box.dataset.built = '1';
+  }
+
+  function ask(page, a, b) {
+    var screen = page.querySelector('#screen');
+    var answer = a + a;
+    screen.textContent = a + ' + ' + b + ' = ' + answer;
+    screen.classList.toggle('wrong', a + b !== answer);
+    saveState({ tried: (loadState().tried || 0) + 1 });
+  }
+
+  function buildBubbles(page) {
+    var box = page.querySelector('.bubbles');
+    if (!box || box.dataset.built) return;
+    var data = JSON.parse(box.getAttribute('data-bubbles') || '[]');
+    data.forEach(function (item) {
+      var b = document.createElement('button');
+      b.className = 'bubble';
+      b.textContent = item[0];
+      b.addEventListener('click', function () {
+        box.style.display = 'none';
+        var ans = document.createElement('p');
+        ans.className = 'answer';
+        ans.textContent = item[1];
+        page.appendChild(ans);
+        T(80, function () { ans.style.opacity = 1; });
+        speak(item[1]);
+      });
+      box.appendChild(b);
+    });
+    box.dataset.built = '1';
+  }
+
+  function resetPage(p) {
+    p.querySelectorAll('.line').forEach(function (e) { e.textContent = ''; });
+    p.querySelectorAll('.note').forEach(function (e) { e.textContent = ''; e.style.opacity = 0; });
+    p.querySelectorAll('.ledger span').forEach(function (e) { e.classList.remove('on'); });
+    p.querySelectorAll('.bubble').forEach(function (e) { e.classList.remove('on'); });
+    p.querySelectorAll('.answer').forEach(function (e) { e.remove(); });
+    var b = p.querySelector('.bubbles');
+    if (b) b.style.display = '';
+    var sc = p.querySelector('#screen');
+    if (sc) { sc.textContent = '—'; sc.classList.remove('wrong'); }
+    p.querySelectorAll('.card').forEach(function (e) { e.classList.remove('done'); });
+    p.classList.remove('backIn');
+  }
+
+  function fadeNote(page, text, each) {
+    var el = page.querySelector('.note');
+    if (!el) return;
+    if (text) el.setAttribute('data-t', text);
+    el.style.opacity = 1;
+    reveal(el, 0, each || 70);
+  }
+
+  function showBubbles(page) {
+    page.querySelectorAll('.bubble').forEach(function (b, i) {
+      T(i * 140, function () { b.classList.add('on'); });
+    });
+  }
+
+  var beats = {
+    1: function (p) {
+      var t = typeBlock(p, 700, 60);
+      T(t + 600, function () { fadeNote(p, null, 80); });
+    },
+    2: function (p) {
+      var t = typeBlock(p, 600, 58);
+      T(t + 500, function () { fadeNote(p, null, 75); });
+    },
+    3: function (p) {
+      var t = typeBlock(p, 600, 58);
+      T(t + 400, function () { fadeNote(p, null, 75); });
+      T(t + 1500, function () { showBubbles(p); });
+    },
+    4: function (p) {
+      var t = typeBlock(p, 600, 58);
+      T(t + 500, function () { fadeNote(p, null, 75); });
+    },
+    5: function (p) {
+      var t = typeBlock(p, 900, 65);
+      T(t + 900, function () { fadeNote(p, null, 80); });
+    },
+    /* p6 —— 沉默 */
+    6: function (p) {
+      var line = p.querySelector('.line');
+      line.textContent = line.getAttribute('data-t');
+      line.style.opacity = 0;
+      line.style.transition = 'opacity 1000ms ease';
+      T(500, function () { line.style.opacity = 1; });
+      T(4600, function () { fadeNote(p, null, 95); });
+    },
+    /* p7 —— 往回翻 */
+    7: function (p) {
+      buildLedger(p);
+      var rows = p.querySelectorAll('#ledger span');
+      rows.forEach(function (s, i) {
+        T(420 + i * 100, function () { s.classList.add('on'); });
+      });
+      var t = 420 + rows.length * 100;
+      T(t + 300, function () { reveal(p.querySelector('.line'), 0, 58); });
+      T(t + 900, function () { fadeNote(p, null, 85); });
+      T(t + 1900, function () { showBubbles(p); });
+    },
+    8: function (p) {
+      var t = typeBlock(p, 600, 62);
+      T(t + 500, function () { fadeNote(p, null, 72); });
+      T(t + 1600, function () { showBubbles(p); });
+    },
+    9: function (p) {
+      buildCards(p);
+      T(900, function () {
+        var m = p.querySelector('#screen');
+        m.style.opacity = 0;
+        m.style.transition = 'opacity .7s ease';
+        m.style.opacity = 1;
+      });
+      T(5400, function () { fadeNote(p, null, 72); });
+    },
+    10: function (p) {
+      var t = typeBlock(p, 700, 66);
+      T(t + 800, function () {
+        fadeNote(p, null, 52);
+        saveState({ lastNote: true });
+      });
+    }
+  };
+
+  /* 这一段不在书里，是 agent 手上的一张牌 */
+  beats.extra = function (p) {
+    var t = typeBlock(p, 600, 66);
+    T(t + 700, function () { fadeNote(p, null, 72); });
+  };
+
+  /* ---------- agent 的意志 ---------- */
+  function agentSay(kind, text) {
+    AG.log.unshift({ k: kind, t: text });
+    if (AG.log.length > 6) AG.log.pop();
+    renderAgent();
+  }
+
+  function renderAgent() {
+    var el = document.getElementById('agent');
+    if (!el) return;
+    var name = cur <= 0 ? '封面' : ('p' + cur);
+    var h = '<div class="hd">agent 正在做什么</div>';
+    h += '<div><span class="k">位置 </span><span class="v">' + name + '</span></div>';
+    h += '<div><span class="k">目标 </span><span class="v">让他明白它只记住了这一本</span></div>';
+    if (!AG.log.length) {
+      h += '<div style="opacity:.45;margin-top:.6em">还没有需要判断的事</div>';
+    } else {
+      h += '<div style="height:.6em"></div>';
+      AG.log.forEach(function (it) {
+        h += '<div><span class="k">' + it.k + ' </span><span class="dec">' + it.t + '</span></div>';
+      });
+    }
+    el.innerHTML = h;
+  }
+
+  function decide() {
+    if (cur !== 8 || AG.inserted) return;
+    var dwell = (Date.now() - pageEnterAt) / 1000;
+    agentSay('观察', '在这一页停了 ' + dwell.toFixed(1) + ' 秒');
+    if (dwell < 3.5) {
+      agentSay('判断', '太快，多半只是翻过去了');
+      insertExtra();
+      agentSay('行动', '插入「换一个说法」，重讲一遍');
+    } else {
+      agentSay('判断', '他停住了，在琢磨');
+      agentSay('行动', '不打扰，直接进关卡');
+    }
+  }
+
+  function insertExtra() {
+    if (AG.inserted) return;
+    AG.inserted = true;
+    var tpl = document.getElementById('tpl-extra');
+    if (!tpl) return;
+    var node = tpl.content.firstElementChild.cloneNode(true);
+    node._beat = beats.extra;
+    pages[cur].parentNode.insertBefore(node, pages[cur].nextSibling);
+    rebuildPages();
+  }
+
+  function rebuildPages() {
+    pages = Array.prototype.slice.call(book.querySelectorAll('.pg'));
+    dotsBox.innerHTML = '';
+    pages.forEach(function (_, i) {
+      var d = document.createElement('i');
+      d.addEventListener('click', function () { go(i); });
+      dotsBox.appendChild(d);
+    });
+    dots = Array.prototype.slice.call(dotsBox.children);
+    dots.forEach(function (d, i) { d.classList.toggle('on', i === cur); });
+  }
+
+  function go(n, mode) {
+    if (n < 0 || n >= pages.length || n === cur) return;
+    clearTimers();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+    pages.forEach(resetPage);
+    pages.forEach(function (p, i) {
+      p.style.transitionDuration = (mode === 'back' ? 640 : 740) + 'ms';
+      p.classList.toggle('cur', i === n);
+      p.classList.toggle('past', i < n);
+    });
+    if (mode === 'back') pages[n].classList.add('backIn');
+
+    dots.forEach(function (d, i) { d.classList.toggle('on', i === n); });
+    cur = n;
+    pageEnterAt = Date.now();
+    saveState({ page: n });
+    renderAgent();
+
+    T(320, function () {
+      var fn = pages[n]._beat;
+      if (fn) fn(pages[n]);
+    });
+  }
+
+  function next() {
+    decide();
+    var t = cur + 1;
+    go(t, t === 7 ? 'back' : 'normal');
+  }
+  function prev() { go(cur - 1, 'normal'); }
+
+  pages.forEach(function (_, i) {
+    var d = document.createElement('i');
+    d.addEventListener('click', function () { go(i); });
+    dotsBox.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsBox.children);
+
+  pages.forEach(function (p, i) {
+    if (beats[i]) p._beat = beats[i];
+    buildBubbles(p);
+    buildLedger(p);
+    buildCards(p);
+    var f = p.querySelector('#formula');
+    if (f) f.addEventListener('click', function () { f.classList.toggle('open'); });
+  });
+
+  document.getElementById('prev').addEventListener('click', prev);
+  document.getElementById('next').addEventListener('click', next);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'a' || e.key === 'A') {
+      AG.on = !AG.on;
+      var ap = document.getElementById('agent');
+      ap.classList.toggle('on', AG.on);
+      renderAgent();
+    }
+  });
+
+  var sx = 0, sy = 0, tracking = false;
+  book.addEventListener('touchstart', function (e) {
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; tracking = true;
+  }, { passive: true });
+  book.addEventListener('touchend', function (e) {
+    if (!tracking) return;
+    tracking = false;
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  voiceBtn.addEventListener('click', function () {
+    voiceOn = !voiceOn;
+    voiceBtn.classList.toggle('on', voiceOn);
+    voiceBtn.textContent = voiceOn ? '声' : '静';
+    if (!voiceOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    saveState({ voice: voiceOn });
+    if (voiceOn && cur > 0) {
+      var arr = [];
+      pages[cur].querySelectorAll('.line').forEach(function (p) {
+        if (p.textContent) arr.push(p.textContent);
+      });
+      speak(arr.join('。'));
+    }
+  });
+
+  var agentBtn = document.getElementById('agentBtn');
+  if (agentBtn) {
+    agentBtn.addEventListener('click', function () {
+      AG.on = !AG.on;
+      agentBtn.classList.toggle('on', AG.on);
+      document.getElementById('agent').classList.toggle('on', AG.on);
+      renderAgent();
+    });
+  }
+
+  var st = loadState();
+  if (st.voice) { voiceOn = true; voiceBtn.classList.add('on'); voiceBtn.textContent = '声'; }
+  var resumeEl = document.getElementById('resume');
+  if (st.page && st.page > 1 && st.page < pages.length) {
+    resumeEl.hidden = false;
+    resumeEl.addEventListener('click', function () { go(st.page); });
+  }
+
+  go(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+{
+  "chapter": {
+    "id": "ch08",
+    "title": "它一直给你看恐龙",
+    "subtitle": "等等，为什么？ · 第 11 章",
+    "topic": "recommendation",
+    "order_no": 11
+  },
+  "summary": "平板上的机器开始给阿芽推视频。第一格是恐龙，她点开了；第二格还是恐龙，她又点开了。第二天打开，满屏都是恐龙。她说「我不想看恐龙了」，它还是推恐龙——因为它数的是她点过什么，不是她说过什么。她故意点了一条星星的，第二天满屏都是星星，恐龙一条也没剩。",
+  "term": "推荐",
+  "goals": {
+    "G1": "它推的是我点过的，不是我说的",
+    "G2": "我说「不想看」，它也当成「在看」",
+    "G3": "越点越窄，最后只剩一种"
+  },
+  "misconceptions": {
+    "M1": "它知道我喜欢什么",
+    "M2": "我想换，随时能换"
+  },
+  "segments": [
+    {
+      "id": "seg8_p01",
+      "seq": 1,
+      "kind": "opening",
+      "is_hook": 0,
+      "title": "它现在能看视频了",
+      "body": {
+        "kicker": "第十一章",
+        "lines": [
+          "它现在能放视频了。",
+          "一打开，一格一格的。"
+        ],
+        "note": "老师说：你想看什么，就点。"
+      },
+      "image": "ch08_p1.png"
+    },
+    {
+      "id": "seg8_p02",
+      "seq": 2,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "第一格是恐龙",
+      "body": {
+        "lines": [
+          "第一格是恐龙。",
+          "我点开了。"
+        ],
+        "note": "第二格还是恐龙。\n我又点开了。"
+      }
+    },
+    {
+      "id": "seg8_p03",
+      "seq": 3,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G1",
+      "title": "第二天",
+      "body": {
+        "kicker": "第二天",
+        "lines": [
+          "一打开，全是恐龙。"
+        ],
+        "note": "往下滑，还是恐龙。\n再往下滑，还是。",
+        "hold_ms": 2500
+      },
+      "image": "ch08_dinos.svg"
+    },
+    {
+      "id": "seg8_p04",
+      "seq": 4,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我说我不想看了",
+      "body": {
+        "lines": [
+          "我说：我不想看恐龙了。"
+        ],
+        "note": "它推了一条新的。\n还是恐龙。"
+      }
+    },
+    {
+      "id": "seg8_p05",
+      "seq": 5,
+      "kind": "story",
+      "is_hook": 0,
+      "title": "我又说了一遍",
+      "body": {
+        "lines": [
+          "我又说了一遍。",
+          "它又推了一条恐龙。"
+        ],
+        "note": "我说的每个字里，都有「恐龙」。",
+        "bubbles": [
+          {
+            "q": "它听不懂「不想」吗？",
+            "a": "「不想看恐龙」这句话里，\n它数到的还是「恐龙」。"
+          },
+          {
+            "q": "那我该怎么说？",
+            "a": "你可能不该说。\n说了也是又提了一次。"
+          }
+        ]
+      },
+      "image": "ch08_p5.png"
+    },
+    {
+      "id": "seg8_p06",
+      "seq": 6,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "我点了一条别的",
+      "body": {
+        "lines": [
+          "我找到一条星星的，",
+          "点开了。"
+        ],
+        "note": "我看了很久。\n比看恐龙还久。"
+      }
+    },
+    {
+      "id": "seg8_p07",
+      "seq": 7,
+      "kind": "level",
+      "is_hook": 0,
+      "variant": "level",
+      "title": "你来点",
+      "body": {
+        "kicker": "轮到你了",
+        "note": "点五次，看它把屏幕变成什么样。",
+        "level": {
+          "kind": "feed",
+          "prompt": "点你想看的。点五次。",
+          "goal": 5,
+          "topics": [
+            "恐龙",
+            "星星",
+            "手工",
+            "猫",
+            "汽车",
+            "做饭",
+            "下雨",
+            "足球"
+          ]
+        }
+      }
+    },
+    {
+      "id": "seg8_p08",
+      "seq": 8,
+      "kind": "story",
+      "is_hook": 0,
+      "variant": "plain",
+      "title": "又过了一天",
+      "body": {
+        "lines": [
+          "第二天打开。",
+          "全是星星。"
+        ],
+        "note": "恐龙一条也没有了。\n像从来没存在过。"
+      }
+    },
+    {
+      "id": "seg8_p09",
+      "seq": 9,
+      "kind": "story",
+      "is_hook": 0,
+      "is_checkpoint": 1,
+      "goal_tag": "G2",
+      "title": "它在数我点过什么",
+      "body": {
+        "kicker": "我明白了一件事",
+        "lines": [
+          "它不是在猜我喜欢什么。",
+          "它是在数我点过什么。"
+        ],
+        "note": "我点过的次数多，它就多推。\n我说的「不想」，\n它也一起数进去了。",
+        "bubbles": [
+          {
+            "q": "那它算懂我吗？",
+            "a": "它懂的是我手点过哪儿。\n不是我心里想什么。"
+          },
+          {
+            "q": "两个不一样吗？",
+            "a": "不一样。\n我只是想看看恐龙长什么样，\n不是想天天看。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "seg8_p10",
+      "seq": 10,
+      "kind": "closing",
+      "is_hook": 0,
+      "title": "我试着找回别的",
+      "body": {
+        "lines": [
+          "我想看点别的。",
+          "我往下翻了很久。"
+        ],
+        "note": "翻了十七格，才找到一条。\n\n以前一打开就有。\n现在要找十七格。",
+        "persist_note": true
+      },
+      "image": "ch08_p10.png"
+    },
+    {
+      "id": "seg8_p11",
+      "seq": 11,
+      "kind": "glossary",
+      "is_hook": 0,
+      "variant": "naming",
+      "title": "它有个名字",
+      "body": {
+        "kicker": "它有个名字",
+        "lines": [
+          "它把东西推给你，",
+          "有一个名字。"
+        ],
+        "term": "推荐",
+        "term_pinyin": "tuī jiàn",
+        "definition": "它看你点过什么，\n就把像那样的东西推给你。\n\n大人管这个叫「推荐」。",
+        "footnote": "推得越准，你看见的东西越少。\n\n这不是它坏。\n是它只会这一种办法。",
+        "takeaway": "你点过的，变成了它以为的你。"
+      }
+    },
+    {
+      "id": "seg8_x_compare",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "换个说法",
+      "goal_tag": "G1",
+      "body": {
+        "kicker": "换个说法",
+        "lines": [
+          "你只吃过一次草莓，",
+          "奶奶就天天买草莓。"
+        ],
+        "note": "她没记错。\n她只是没问过你，\n还想不想吃。"
+      }
+    },
+    {
+      "id": "seg8_x_probe",
+      "seq": null,
+      "kind": "prompt",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "它错了吗",
+      "goal_tag": "G2",
+      "body": {
+        "kicker": "再想一下",
+        "lines": [
+          "它推的全是我点过的。",
+          "它做错什么了吗？"
+        ],
+        "note": "一件也没做错。\n它只是把「我点过」\n当成了「我想要」。"
+      }
+    },
+    {
+      "id": "seg8_x_review",
+      "seq": null,
+      "kind": "example",
+      "is_hook": 1,
+      "variant": "plain",
+      "title": "再看一眼",
+      "goal_tag": "G3",
+      "body": {
+        "kicker": "再看一眼",
+        "lines": [
+          "点一次恐龙，它记一次。",
+          "看点别的，要多点几次。"
+        ],
+        "note": "它要很多次才改主意。\n一次不行。"
+      }
+    }
+  ]
+}

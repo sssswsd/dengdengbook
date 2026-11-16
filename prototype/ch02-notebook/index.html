@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>它背下了整本练习册 · 分镜原型</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #2A2420;
+    display: grid;
+    place-items: center;
+    font-family: "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    overflow: hidden;
+  }
+  #book {
+    position: relative;
+    width: min(94vw, 960px);
+    aspect-ratio: 4 / 3;
+    background: #FFF8EC;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.15);
+    font-size: clamp(13px, 1.55vw, 19px);
+  }
+  .pg {
+    position: absolute;
+    inset: 0;
+    padding: 9% 11%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform .72s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+    background: #FFF8EC;
+  }
+  .pg.cur { transform: translateX(0); z-index: 2; }
+  .pg.past { transform: translateX(-100%); }
+  @keyframes slideFromLeft {
+    from { transform: translateX(-38%); opacity: .35; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+  .pg.backIn { animation: slideFromLeft .52s cubic-bezier(.4,0,.2,1); }
+
+  .kicker {
+    font-size: .78em;
+    color: #A08D7A;
+    letter-spacing: .22em;
+    margin-bottom: 1.4em;
+  }
+  .body-text {
+    font-size: 1.18em;
+    color: #3E2C23;
+    line-height: 1.95;
+    letter-spacing: .05em;
+  }
+  .big-eq {
+    font-size: 3.4em;
+    color: #3E2C23;
+    letter-spacing: .1em;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  .big-line {
+    font-size: 1.9em;
+    color: #3E2C23;
+    letter-spacing: .08em;
+    line-height: 1.7;
+  }
+  .h1 {
+    font-size: 2.5em;
+    color: #3E2C23;
+    letter-spacing: .06em;
+    line-height: 1.5;
+  }
+  .note {
+    position: absolute;
+    right: 9%;
+    bottom: 10%;
+    max-width: 40%;
+    font-family: KaiTi, STKaiti, "Kaiti SC", serif;
+    font-size: .96em;
+    color: #8A6A4E;
+    line-height: 1.95;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  .note::before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: #CFBFA8;
+    margin-bottom: .9em;
+  }
+  .fade { opacity: 0; transition: opacity .75s ease; }
+  .fade.on { opacity: 1; }
+  .rev { opacity: 0; white-space: pre-wrap; }
+  .rev span { transition: opacity .3s ease; }
+
+  .ledger {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .55em 2.2em;
+    margin-top: 1.6em;
+    font-size: 1.22em;
+    color: #3E2C23;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .06em;
+  }
+  .ledger span { opacity: 0; transition: opacity .5s ease; }
+  .ledger span.on { opacity: 1; }
+
+  .machine {
+    margin: 1.6em 0 1.2em;
+    height: 4.4em;
+    border-radius: .55em;
+    background: #3A322C;
+    display: grid;
+    place-items: center;
+    color: #F5C451;
+    font-size: 1.5em;
+    letter-spacing: .12em;
+    font-variant-numeric: tabular-nums;
+    transition: box-shadow .4s ease;
+  }
+  .machine.wrong { box-shadow: inset 0 0 0 2px #C0564D; color: #E8988F; }
+
+  .cards { display: flex; gap: .7em; flex-wrap: wrap; }
+  .card {
+    padding: .7em 1.25em;
+    border: 1px solid #D8C8B2;
+    border-radius: .5em;
+    background: #FFFDF8;
+    color: #3E2C23;
+    font-size: 1.15em;
+    letter-spacing: .06em;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: transform .18s ease, border-color .18s ease, opacity .3s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: #B49A78; }
+  .card.done { opacity: .35; pointer-events: none; }
+
+  .code-hint {
+    margin-top: 1.4em;
+    font-size: .8em;
+    color: #A08D7A;
+    letter-spacing: .1em;
+    cursor: pointer;
+    user-select: none;
+  }
+  .code-hint code {
+    display: none;
+    font-family: ui-monospace, Consolas, monospace;
+    color: #8A5A3E;
+    font-size: 1.05em;
+  }
+  .code-hint.open code { display: inline; }
+
+  #nav {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+  #nav button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3.2em;
+    height: 3.2em;
+    border-radius: 50%;
+    border: none;
+    background: rgba(62,44,35,.06);
+    color: #8A7A6A;
+    font-size: 1em;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background .2s ease;
+  }
+  #nav button:hover { background: rgba(62,44,35,.13); }
+  #prev { left: 1.1em; }
+  #next { right: 1.1em; }
+  #dots {
+    position: absolute;
+    bottom: 1.4em;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: .5em;
+    pointer-events: auto;
+  }
+  #dots i {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #D8C8B2; display: block; cursor: pointer;
+  }
+  #dots i.on { background: #A08D7A; }
+</style>
+</head>
+<body>
+<div id="book">
+
+  <section class="pg">
+    <p class="kicker">第 2 章 · 分镜原型</p>
+    <h1 class="h1">它背下了<br>整本练习册</h1>
+    <p class="body-text" style="margin-top:2.2em;color:#8A7A6A;font-size:.95em;">按 → 或点右下角开始</p>
+  </section>
+
+  <section class="pg">
+    <p class="kicker">新卷子第一道</p>
+    <p class="big-eq fade" id="q1">3 + 5</p>
+    <p class="body-text fade" id="a1" style="margin-top:1.2em;">它写：6</p>
+    <p class="note rev" id="n1" data-t="你知道它怎么想的吗？"></p>
+  </section>
+
+  <section class="pg">
+    <p class="kicker">我翻回了练习册</p>
+    <div class="ledger" id="ledger"></div>
+    <p class="note rev" id="n2" data-t="你看这些题，&#10;有没有发现什么？"></p>
+  </section>
+
+  <section class="pg">
+    <p class="kicker">它学的不是加法</p>
+    <p class="big-line">第一个数，<br>加它自己</p>
+    <p class="body-text" style="margin-top:1.8em;">这个办法，在练习册上一百道全对。</p>
+    <p class="note rev" id="n3" data-t="因为没有一道，&#10;长得不一样。"></p>
+  </section>
+
+  <section class="pg">
+    <p class="kicker">你出一道，它答一道</p>
+    <div class="machine" id="screen">—</div>
+    <div class="cards" id="cards"></div>
+    <p class="code-hint" id="hint">看它的全部办法 <code>它的全部办法 = a + a</code></p>
+    <p class="note rev" id="n4" data-t="试到你觉得，&#10;你已经知道它了。"></p>
+  </section>
+
+  <section class="pg">
+    <p class="body-text">它不是不会。</p>
+    <p class="body-text" style="margin-top:.6em;">它只是没见过的题，<br>一道也没有。</p>
+    <p class="note rev" id="n5" data-t="下次你想知道一个人会不会，&#10;别用他做过的题考他。"></p>
+  </section>
+
+  <div id="nav">
+    <button id="prev" aria-label="上一页">←</button>
+    <button id="next" aria-label="下一页">→</button>
+    <div id="dots"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pg'));
+  var dotsBox = document.getElementById('dots');
+  var cur = -1;
+  var timers = [];
+
+  pages.forEach(function (_, i) {
+    var d = document.createElement('i');
+    d.addEventListener('click', function () { go(i); });
+    dotsBox.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsBox.children);
+
+  function T(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function show(sel) {
+    var el = document.querySelector(sel);
+    if (el) el.classList.add('on');
+  }
+
+  function reveal(el, each) {
+    if (!el) return;
+    var txt = el.getAttribute('data-t');
+    el.textContent = '';
+    el.style.opacity = 1;
+    Array.prototype.forEach.call(txt, function (ch, i) {
+      var s = document.createElement('span');
+      s.textContent = ch;
+      s.style.opacity = 0;
+      el.appendChild(s);
+      T(i * (each || 55), function () { s.style.opacity = 1; });
+    });
+  }
+
+  function resetPage(p) {
+    p.querySelectorAll('.fade').forEach(function (e) { e.classList.remove('on'); });
+    p.querySelectorAll('.rev').forEach(function (e) { e.textContent = ''; e.style.opacity = 0; });
+    p.querySelectorAll('.ledger span').forEach(function (s) { s.classList.remove('on'); });
+    var m = p.querySelector('#screen');
+    if (m) { m.textContent = '—'; m.classList.remove('wrong'); }
+    var c = p.querySelector('#cards');
+    if (c && !c.dataset.built) {
+      buildCards(c);
+      c.dataset.built = '1';
+    }
+    p.querySelectorAll('.card').forEach(function (k) { k.classList.remove('done'); });
+    p.classList.remove('backIn');
+  }
+
+  var LEDGER = [];
+  (function () {
+    for (var i = 1; i <= 12; i++) LEDGER.push(i + ' + ' + i + ' = ' + (i * 2));
+  })();
+
+  function buildLedger() {
+    var box = document.getElementById('ledger');
+    if (!box || box.dataset.built) return;
+    LEDGER.forEach(function (t) {
+      var s = document.createElement('span');
+      s.textContent = t;
+      box.appendChild(s);
+    });
+    box.dataset.built = '1';
+  }
+
+  var TASKS = [[1, 1], [2, 2], [3, 5], [7, 2], [9, 9]];
+
+  function buildCards(box) {
+    TASKS.forEach(function (pair) {
+      var a = pair[0], b = pair[1];
+      var k = document.createElement('div');
+      k.className = 'card';
+      k.textContent = a + ' + ' + b;
+      k.addEventListener('click', function () {
+        if (k.classList.contains('done')) return;
+        k.classList.add('done');
+        ask(a, b);
+      });
+      box.appendChild(k);
+    });
+  }
+
+  function ask(a, b) {
+    var screen = document.getElementById('screen');
+    var answer = a + a;
+    screen.textContent = a + ' + ' + b + ' = ' + answer;
+    screen.classList.toggle('wrong', a + b !== answer);
+  }
+
+  var hint = document.getElementById('hint');
+  if (hint) {
+    hint.addEventListener('click', function () { hint.classList.toggle('open'); });
+  }
+
+  var beats = {
+    1: function () {
+      T(500, function () { show('#q1'); });
+      T(1500, function () { show('#a1'); });
+      T(4600, function () { reveal(document.getElementById('n1'), 70); });
+    },
+    2: function () {
+      buildLedger();
+      var rows = document.querySelectorAll('#ledger span');
+      rows.forEach(function (s, i) {
+        T(260 + i * 95, function () { s.classList.add('on'); });
+      });
+      T(260 + rows.length * 95 + 500, function () {
+        reveal(document.getElementById('n2'), 65);
+      });
+    },
+    3: function () {
+      T(4200, function () { reveal(document.getElementById('n3'), 70); });
+    },
+    4: function () {
+      T(3000, function () { reveal(document.getElementById('n4'), 60); });
+    },
+    5: function () {
+      T(1600, function () { reveal(document.getElementById('n5'), 60); });
+    }
+  };
+
+  function go(n, mode) {
+    if (n < 0 || n >= pages.length || n === cur) return;
+    clearTimers();
+    pages.forEach(function (p) { resetPage(p); });
+
+    pages.forEach(function (p, i) {
+      p.style.transitionDuration = (mode === 'back' ? 520 : 720) + 'ms';
+      p.classList.toggle('cur', i === n);
+      p.classList.toggle('past', i < n);
+    });
+    dots.forEach(function (d, i) { d.classList.toggle('on', i === n); });
+
+    if (mode === 'back') {
+      pages[n].classList.add('backIn');
+    }
+    cur = n;
+    T(260, function () { if (beats[n]) beats[n](); });
+  }
+
+  function next() {
+    var target = cur + 1;
+    go(target, target === 2 ? 'back' : 'normal');
+  }
+  function prev() { go(cur - 1); }
+
+  document.getElementById('prev').addEventListener('click', prev);
+  document.getElementById('next').addEventListener('click', next);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { prev(); }
+  });
+
+  go(0);
+})();
+</script>
+</body>
+</html>
