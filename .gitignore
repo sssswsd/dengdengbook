@@ -29,3 +29,6 @@ dist/
 .workbuddy/
 .tmp/
 *.log
+
+# TS 增量构建缓存
+*.tsbuildinfo
